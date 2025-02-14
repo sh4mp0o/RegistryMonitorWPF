@@ -1,24 +1,50 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace RegistryMonitorWPF.Models
 {
     /// <summary>
-    /// Представляет запись из реестра.
+    /// Представляет запись в реестре.
     /// </summary>
-    public class RegistryRecord : INotifyPropertyChanged
+    public class RegistryRecord
     {
-        private DateTime? date;
-        private string name;
-        private string id;
-        private string type;
+        /// <summary>
+        /// Дата регистрации заявления.
+        /// </summary>
+        public DateTime? ApplicationDate { get; set; }
 
-        public DateTime? Date { get => date; set { date = value; OnPropertyChanged(nameof(Date)); } }
-        public string Name { get => name; set { name = value; OnPropertyChanged(nameof(Name)); } }
-        public string Id { get => id; set { id = value; OnPropertyChanged(nameof(Id)); } }
-        public string Type { get => type; set { type = value; OnPropertyChanged(nameof(Type)); } }
+        /// <summary>
+        /// Дата государственной регистрации.
+        /// </summary>
+        public DateTime? RegistrationDate { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        /// <summary>
+        /// Дата внесения в реестр.
+        /// </summary>
+        public DateTime? InclusionDate { get; set; }
+
+        /// <summary>
+        /// Дата исключения из реестра.
+        /// </summary>
+        public DateTime? ExclusionDate { get; set; }
+
+        /// <summary>
+        /// Дата основного события (используется в DataGrid).
+        /// </summary>
+        public DateTime? Date => ExclusionDate ?? InclusionDate ?? RegistrationDate ?? ApplicationDate;
+
+        /// <summary>
+        /// Название программного обеспечения.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Уникальный идентификатор записи.
+        /// </summary>
+        public int? Id { get; set; }
+
+        /// <summary>
+        /// Тип события (включение, исключение и т. д.).
+        /// </summary>
+        public string Type { get; set; }
     }
 }

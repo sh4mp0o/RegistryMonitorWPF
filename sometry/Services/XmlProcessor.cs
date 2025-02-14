@@ -22,21 +22,25 @@ namespace RegistryMonitorWPF.Services
             return await Task.Run(() =>
             {
                 var records = new List<RegistryRecord>();
-
                 XDocument doc = XDocument.Parse(xmlContent);
+
                 foreach (var item in doc.Descendants("item"))
                 {
                     var record = new RegistryRecord
                     {
-                        Date = DateTime.TryParse(item.Element("inclusionDate")?.Value, out DateTime incDate) ? incDate :
-                               DateTime.TryParse(item.Element("exclusionDate")?.Value, out DateTime excDate) ? excDate :
-                               DateTime.TryParse(item.Element("editHistory")?.Element("date")?.Value, out DateTime editDate) ? editDate : (DateTime?)null,
+                        ApplicationDate = DateTime.TryParse(item.Element("inclusionApplicationDate")?.Value, out DateTime appDate) ? appDate : (DateTime?)null,
+                        RegistrationDate = DateTime.TryParse(item.Element("gosRegistrationDate")?.Value, out DateTime regDate) ? regDate : (DateTime?)null,
+                        InclusionDate = DateTime.TryParse(item.Element("inclusionDate")?.Value, out DateTime incDate) ? incDate : (DateTime?)null,
+                        ExclusionDate = DateTime.TryParse(item.Element("exclusionDate")?.Value, out DateTime excDate) ? excDate : (DateTime?)null,
                         Name = item.Element("name")?.Value ?? "Неизвестно",
-                        Id = item.Element("registrationNumber")?.Value ?? "Нет ID",
+                        Id = int.TryParse(item.Element("registrationNumber")?.Value, out int idValue) ? idValue : (int?)null,
                         Type = GetEventType(item)
                     };
 
-                    if (record.Date.HasValue && record.Date.Value >= analysisDate)
+                    if (record.ApplicationDate >= analysisDate ||
+                        record.RegistrationDate >= analysisDate ||
+                        record.InclusionDate >= analysisDate ||
+                        record.ExclusionDate >= analysisDate)
                     {
                         records.Add(record);
                     }
@@ -45,6 +49,7 @@ namespace RegistryMonitorWPF.Services
                 return records;
             });
         }
+
 
         /// <summary>
         /// Определяет тип события для записи реестра (например, включение, исключение, изменение).

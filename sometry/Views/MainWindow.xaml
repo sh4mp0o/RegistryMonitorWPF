@@ -79,7 +79,7 @@
               IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="LightGray"
               RowHeight="30" FontSize="14" Background="White"
               Foreground="Black" BorderBrush="Black" GridLinesVisibility="All"
-              MouseDoubleClick="ResultsDataGrid_MouseDoubleClick">
+              MouseDoubleClick="ResultsDataGrid_MouseDoubleClick" HorizontalScrollBarVisibility="Disabled">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=d}" SortMemberPath="Date" Width="150"/>
                     <DataGridTextColumn Header="Тип события" Binding="{Binding Type}" SortMemberPath="Type" Width="250"/>

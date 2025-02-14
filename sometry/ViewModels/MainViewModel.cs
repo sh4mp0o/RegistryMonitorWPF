@@ -126,13 +126,19 @@ namespace RegistryMonitorWPF.ViewModels
         /// <summary>
         /// Отображает развернутую информацию о записи в реестре.
         /// </summary>
-        private void ShowRecordDetails(object parameter)
+        private void ShowRecordDetails(RegistryRecord record)
         {
-            if (parameter is RegistryRecord record)
-            {
-                MessageBox.Show($"Дата: {record.Date?.ToShortDateString()}\nТип события: {record.Type}\nНазвание ПО: {record.Name}\nID: {record.Id}",
-                                "Детали записи", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            if (record == null) return;
+
+            MessageBox.Show($"Детали записи:\n\n"
+                + $"Дата регистрации заявления: {record.ApplicationDate?.ToShortDateString()}\n"
+                + $"Дата гос.регистрации: {record.RegistrationDate?.ToShortDateString()}\n"
+                + $"Дата внесения в реестр: {record.InclusionDate?.ToShortDateString()}\n"
+                + $"Дата исключения из реестра: {record.ExclusionDate?.ToShortDateString()}\n"
+                + $"Название ПО: {record.Name}\n"
+                + $"ID: {record.Id}\n"
+                + $"Тип события: {record.Type}",
+                "Подробности записи", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <summary>
